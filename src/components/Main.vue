@@ -8,13 +8,13 @@
             id="search"
             type="text"
             placeholder="Search"
-            :model="query"
+            v-model="query"
           />
 
           <div class="p-4">
             <button
               class="bg-blue-900 text-white rounded-full p-2 hover:bg-blue-700 focus:outline-none w-12 h-12 flex items-center justify-center"
-              @click="getSearchResults()"
+              @click="getSearchResults(query)"
             >
               <font-awesome-icon :icon="['fas', 'search']" />
             </button>
@@ -28,26 +28,23 @@
         class="text-white"
         v-for="artist in searchResult"
         :key="artist.idArtist"
-      >
-        {{ artist.strArtist }}
-      </h1>
+      >{{ artist.strArtist }}</h1>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Main",
   data() {
-    return {};
+    return {
+      query: "",
+    };
   },
   computed: {
     ...mapGetters(["searchResult"]),
-    ...mapState({
-      query: (state) => state.query,
-    }),
   },
   methods: {
     ...mapActions(["getSearchResults"]),

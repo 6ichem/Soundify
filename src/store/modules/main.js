@@ -2,7 +2,6 @@ import axios from "axios";
 
 const state = {
   results: [],
-  query: "",
 };
 
 const getters = {
@@ -10,13 +9,12 @@ const getters = {
 };
 
 const actions = {
-  async getSearchResults() {
-    let query = state.query;
+  async getSearchResults({ commit }, query) {
     const res = await axios.get(
       `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
-
-    res.data.artists.forEach((artist) => state.results.push(artist));
+    // Execute the mutation which receive the data and pass to the state
+    commit("returnResults", res.data.artists);
   },
   /*async getSearchResults() {
     const res = await axios.get(
