@@ -7,7 +7,7 @@
             class="rounded-l-full w-full py-6 px-6 text-gray-700 leading-tight focus:outline-none"
             id="search"
             type="text"
-            placeholder="Search"
+            placeholder="Search artist name..."
             v-model="query"
           />
 
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="flex justify-center text-white">
+    <div class="flex justify-center text-white mb-16">
       <div
         class="text-white"
         v-for="artist in searchResult"
@@ -98,7 +98,7 @@
                 <span
                   class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                 >
-                  <a :href="artist.strWebsite">
+                  <a :href="'https://' + artist.strWebsite">
                     <font-awesome-icon
                       :icon="['fas', 'globe']"
                       class="text-black mr-1"
@@ -126,6 +126,18 @@
                   </a>
                 </span>
               </div>
+              <h1 class="text-black mb-2">Available tracks:</h1>
+              <div v-for="mv in searchMvs" :key="mv.idTrack" class="mb-1">
+                <button
+                  class="text-black bg-gray-300 hover:bg-gray-400 w-full h-10 text-left rounded"
+                  style="outline: none"
+                >
+                  <a :href="mv.strMusicVid" class="ml-2">
+                    <font-awesome-icon :icon="['fas', 'play-circle']" />
+                    {{ artist.strArtist }} - {{ mv.strTrack }}</a
+                  >
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -145,7 +157,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["searchResult"]),
+    ...mapGetters(["searchResult", "searchMvs"]),
   },
   methods: {
     ...mapActions(["getSearchResults"]),
