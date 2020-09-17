@@ -19,7 +19,10 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
 
 body {
-  background-color: rgb(17, 12, 76);
+  background: #870000;
+  background: -webkit-linear-gradient(to right, #190a05, #870000);
+  background: linear-gradient(to right, #190a05, #870000);
+
   font-family: "Nanum Gothic", sans-serif;
 }
 </style>
