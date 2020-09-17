@@ -10,12 +10,13 @@ const getters = {
 };
 
 const actions = {
-  async getSearchResults({ commit }) {
+  async getSearchResults() {
+    let query = state.query;
     const res = await axios.get(
-      "https://www.theaudiodb.com/api/v1/json/1/search.php?s=coldplay"
+      `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
 
-    commit("returnResults", res.data);
+    res.data.artists.forEach((artist) => state.results.push(artist));
   },
   /*async getSearchResults() {
     const res = await axios.get(
