@@ -30,7 +30,7 @@
         :key="artist.idArtist"
       >
         <div class="container">
-          <div class="w-full max-w-full lg:flex">
+          <div class="w-full max-w-full lg:flex shadow-xl">
             <div
               class="flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
             >
@@ -94,7 +94,19 @@
                   {{ artist.strBiographyEN }}
                 </p>
               </div>
-              <div class="px-6 pt-4 pb-2 mb-8">
+              <h1 class="text-black mb-3">Available tracks:</h1>
+              <div v-for="mv in searchMvs" :key="mv.idTrack" class="mb-2">
+                <button
+                  class="text-black bg-gray-300 hover:bg-gray-400 w-full h-12 text-left rounded"
+                  style="outline: none"
+                >
+                  <a :href="mv.strMusicVid" class="ml-2">
+                    <font-awesome-icon :icon="['fas', 'play-circle']" />
+                    {{ artist.strArtist }} - {{ mv.strTrack }}</a
+                  >
+                </button>
+              </div>
+              <div class="mb-8 mt-8">
                 <span
                   class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                 >
@@ -125,18 +137,6 @@
                     />twitter
                   </a>
                 </span>
-              </div>
-              <h1 class="text-black mb-2">Available tracks:</h1>
-              <div v-for="mv in searchMvs" :key="mv.idTrack" class="mb-1">
-                <button
-                  class="text-black bg-gray-300 hover:bg-gray-400 w-full h-10 text-left rounded"
-                  style="outline: none"
-                >
-                  <a :href="mv.strMusicVid" class="ml-2">
-                    <font-awesome-icon :icon="['fas', 'play-circle']" />
-                    {{ artist.strArtist }} - {{ mv.strTrack }}</a
-                  >
-                </button>
               </div>
             </div>
           </div>
