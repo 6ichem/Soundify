@@ -13,7 +13,7 @@ const actions = {
     const res = await axios.get(
       `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
-    // Execute the mutation which receive the data and pass to the state
+
     commit("returnResults", res.data.artists);
   },
   /*async getSearchResults() {
