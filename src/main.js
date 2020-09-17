@@ -4,9 +4,10 @@ import store from "./store";
 import "./assets/tailwind.css";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faFacebook, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-library.add(faSearch);
+library.add(faSearch, faGlobe, faFacebook, faTwitter);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

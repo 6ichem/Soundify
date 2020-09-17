@@ -13,8 +13,11 @@ const actions = {
     const res = await axios.get(
       `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
-
-    commit("returnResults", res.data.artists);
+    if (res.data.artists) {
+      commit("returnResults", res.data.artists);
+    } else {
+      console.log("not found");
+    }
   },
   /*async getSearchResults() {
     const res = await axios.get(
