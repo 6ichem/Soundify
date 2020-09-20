@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const state = {
   results: [],
@@ -15,14 +15,14 @@ const getters = {
 };
 
 const actions = {
-  async getSearchResults({ commit, state }, query) {
+  async getSearchResults({ commit }, query) {
     const res = await axios.get(
       `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
 
-    const artistId = res.data.artists[0]["idArtist"];
+    const artistId = res.data.artists[0]['idArtist'];
 
-    const getMv = await axios.get(
+    const getMvs = await axios.get(
       `https://theaudiodb.com/api/v1/json/1/mvid.php?i=${artistId}`
     );
 
@@ -30,38 +30,32 @@ const actions = {
       `https://theaudiodb.com/api/v1/json/1/album.php?i=${artistId}`
     );
 
-    for (const id of getAlbums.data.album.map((e) => e.idAlbum)) {
+    const albums = getAlbums.data.album.map(
+      ({
+        idAlbum: id,
+        strAlbum: albumName,
+        strDescriptionEN: albumDescription,
+      }) => ({ id, albumName, albumDescription })
+    );
+
+    const tracks = {};
+
+    for (const album of albums) {
+      const { id, albumName, albumDescription } = album;
       const {
-        data: { track },
+        data: { track: list },
       } = await axios.get(
         `https://theaudiodb.com/api/v1/json/1/track.php?m=${id}`
       );
-      state.tracks.push(track);
+
+      tracks[id] = { albumDescription, albumName, list };
     }
 
-    /*const getTracks = await axios.get(
-      `https://theaudiodb.com/api/v1/json/1/track.php?m=${albumId}`
-    );*/
-
-    //console.log(getTracks);
-
-    console.log(state.tracks);
-
-    commit("returnTracks", state.tracks);
-
-    commit("returnAlbums", getAlbums.data.album);
-
-    commit("returnMvs", getMv.data.mvids);
-
-    commit("returnResults", res.data.artists);
+    commit('returnTracks', tracks);
+    commit('returnAlbums', getAlbums.data.album);
+    commit('returnMvs', getMvs.data.mvids);
+    commit('returnResults', res.data.artists);
   },
-  /*async getSearchResults() {
-    const res = await axios.get(
-      "https://www.theaudiodb.com/api/v1/json/1/search.php?s=coldplay"
-    );
-
-    console.log(res.data.artists[0].strArtist);
-  },*/
 };
 
 const mutations = {

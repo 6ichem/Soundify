@@ -116,14 +116,23 @@
                       -
                       {{ album.intYearReleased }}
                     </p>
-                    <button class="text-black text-left" @click="more = !more">Show more...</button>
-                    <div v-if="more" class="fixed inset-0 flex justify-center items-center">
+                    <button
+                      class="text-black text-left"
+                      @click="getTracks(album.idAlbum)"
+                    >Show more...</button>
+                    <div
+                      v-if="more"
+                      class="fixed inset-0 flex justify-center items-center"
+                      @click="more = !more"
+                    >
                       <div class="absolute mx-auto w-auto max-w-2xl">
                         <div class="bg-white w-full rounded text-black px-5 py-5 pb-5">
+                          <h1 class="mb-2 font-extrabold">Album:</h1>
+                          {{ tracks.albumName }}
                           <h1 class="mb-2 font-extrabold">Description:</h1>
-                          {{ album.strDescriptionEN }}
+                          {{ tracks.albumDescription }}
                           <h1 class="mb-2 font-extrabold">Tracklist:</h1>
-                          <div v-for="track in searchTracks" :key="track.idTrack">
+                          <div v-for="track in tracks.list" :key="track.idTrack">
                             <h1>{{ track.strTrack }}</h1>
                           </div>
                         </div>
@@ -172,6 +181,7 @@ export default {
     return {
       query: "",
       more: false,
+      albumId: null,
     };
   },
   computed: {
@@ -181,9 +191,18 @@ export default {
       "searchAlbums",
       "searchTracks",
     ]),
+    tracks() {
+      const tracks = this.searchTracks[this.albumId];
+      console.log(tracks);
+      return tracks;
+    },
   },
   methods: {
     ...mapActions(["getSearchResults"]),
+    getTracks(albumId) {
+      this.more = !this.more;
+      this.albumId = albumId;
+    },
   },
 };
 </script>
