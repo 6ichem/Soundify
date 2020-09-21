@@ -25,7 +25,11 @@
 
     <div class="flex justify-center text-white mb-16">
       <div v-if="more" class="fixed z-100 inset-0 opacity-25 bg-black"></div>
-      <div class="text-white" v-for="artist in searchResult" :key="artist.idArtist">
+      <div
+        class="text-white"
+        v-for="artist in searchResult"
+        :key="artist.idArtist"
+      >
         <div class="container">
           <div class="w-full max-w-full lg:flex shadow-xl">
             <div
@@ -61,9 +65,7 @@
                   <li class="text-black font-extrabold">
                     Formed year:
                     <span class="text-gray-700">
-                      {{
-                      artist.intFormedYear
-                      }}
+                      {{ artist.intFormedYear }}
                     </span>
                   </li>
                   <li class="text-black font-extrabold">
@@ -89,9 +91,60 @@
                 </ol>
               </div>
               <div class="mb-8">
-                <p class="text-gray-700 text-base">{{ artist.strBiographyEN }}</p>
+                <p class="text-gray-700 text-base">
+                  {{ artist.strBiographyEN }}
+                </p>
               </div>
-              <h1 class="text-black mb-3">Available music videos:</h1>
+              <h1 class="text-black mb-3">Available albums:</h1>
+              <div
+                v-for="album in searchAlbums"
+                :key="album.idAlbum"
+                class="mb-2"
+              >
+                <div class="flex">
+                  <img :src="album.strAlbumThumb" class="h-20 w-20 mr-3" />
+                  <div class="flex flex-col justify-center">
+                    <h1 class="mt-0 text-black text-xl">
+                      {{ album.strAlbum }}
+                    </h1>
+                    <p class="text-black text-sm">
+                      Score
+                      <a>{{ album.intScore }}</a>
+                      -
+                      {{ album.intYearReleased }}
+                    </p>
+                    <button
+                      class="text-black text-left"
+                      @click="setTracks(album.idAlbum)"
+                    >
+                      View album tracklist
+                    </button>
+                    <div
+                      v-if="more"
+                      class="fixed overflow-y-auto inset-0 flex justify-center items-center z-50 h-auto"
+                    >
+                      <div class="absolute mx-auto w-auto max-w-2xl">
+                        <div class="bg-white w-fullrounded text-black p-5">
+                          <ol
+                            v-for="track in tracks.list"
+                            :key="track.idTrack"
+                            class="text-black"
+                          >
+                            <li>{{ track.strTrack }}</li>
+                          </ol>
+                          <button
+                            @click="more = !more"
+                            class="bg-white hover:bg-gray-100 mt-2 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h1 class="text-black mb-3 mt-8">Available music videos:</h1>
               <div v-for="mv in searchMvs" :key="mv.idTrack" class="mb-2">
                 <a :href="mv.strMusicVid">
                   <button
@@ -105,62 +158,35 @@
                   </button>
                 </a>
               </div>
-              <div v-for="album in searchAlbums" :key="album.idAlbum" class="mb-2">
-                <div class="flex">
-                  <img :src="album.strAlbumThumb" class="h-20 w-20 mr-3" />
-                  <div class="flex flex-col justify-center">
-                    <h1 class="mt-0 text-black text-xl">{{ album.strAlbum }}</h1>
-                    <p class="text-black text-sm">
-                      Score
-                      <a>{{ album.intScore }}</a>
-                      -
-                      {{ album.intYearReleased }}
-                    </p>
-                    <button
-                      class="text-black text-left"
-                      @click="setTracks(album.idAlbum)"
-                    >Show more...</button>
-                    <div
-                      v-if="more"
-                      class="fixed inset-0 flex justify-center items-center"
-                      @click="more = !more"
-                    >
-                      <div class="absolute mx-auto w-auto max-w-2xl">
-                        <div class="bg-white w-full rounded text-black px-5 py-5 pb-5">
-                          <h1 class="mb-2 font-extrabold">Album:</h1>
-                          {{ tracks.albumName }}
-                          <h1 class="mb-2 font-extrabold">Description:</h1>
-                          {{ tracks.albumDescription }}
-                          <h1 class="mb-2 font-extrabold">Tracklist:</h1>
-                          <div v-for="track in tracks.list" :key="track.idTrack">
-                            <h1>{{ track.strTrack }}</h1>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="mb-8 mt-8">
                 <span
                   class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                 >
                   <a :href="'https://' + artist.strWebsite">
-                    <font-awesome-icon :icon="['fas', 'globe']" class="text-black mr-1" />website
+                    <font-awesome-icon
+                      :icon="['fas', 'globe']"
+                      class="text-black mr-1"
+                    />website
                   </a>
                 </span>
                 <span
                   class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                 >
                   <a :href="artist.strFacebook">
-                    <font-awesome-icon :icon="['fab', 'facebook']" class="text-black mr-1" />facebook
+                    <font-awesome-icon
+                      :icon="['fab', 'facebook']"
+                      class="text-black mr-1"
+                    />facebook
                   </a>
                 </span>
                 <span
                   class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
                 >
                   <a :href="artist.strTwitter">
-                    <font-awesome-icon :icon="['fab', 'twitter']" class="text-black mr-1" />twitter
+                    <font-awesome-icon
+                      :icon="['fab', 'twitter']"
+                      class="text-black mr-1"
+                    />twitter
                   </a>
                 </span>
               </div>
@@ -190,7 +216,7 @@ export default {
       "searchMvs",
       "searchAlbums",
       "searchTracks",
-    ])
+    ]),
   },
   methods: {
     ...mapActions(["getSearchResults"]),

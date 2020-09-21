@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const state = {
   results: [],
@@ -20,7 +20,7 @@ const actions = {
       `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${query}`
     );
 
-    const artistId = res.data.artists[0]['idArtist'];
+    const artistId = res.data.artists[0]["idArtist"];
 
     const getMvs = await axios.get(
       `https://theaudiodb.com/api/v1/json/1/mvid.php?i=${artistId}`
@@ -48,15 +48,13 @@ const actions = {
       } = await axios.get(
         `https://theaudiodb.com/api/v1/json/1/track.php?m=${id}`
       );
-
-      // Assign each object on tracks with id as its key/property
       tracks[id] = { albumDescription, albumName, list };
     }
 
-    commit('returnTracks', tracks);
-    commit('returnAlbums', getAlbums.data.album);
-    commit('returnMvs', getMvs.data.mvids);
-    commit('returnResults', res.data.artists);
+    commit("returnTracks", tracks);
+    commit("returnAlbums", getAlbums.data.album);
+    commit("returnMvs", getMvs.data.mvids);
+    commit("returnResults", res.data.artists);
   },
 };
 
